@@ -11,6 +11,9 @@ jobs:
   build:
     name: Compile + Tests + Static Analysis + ChatGPT
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: app
 
     env:
       OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
@@ -36,11 +39,13 @@ jobs:
 
       # 1) Compilation
       - name: Compile (skip tests)
-        run: mvn -B -ntp -DskipTests=true clean package
+        run: |
+          mvn -B -ntp -DskipTests=true clean package
 
       # 2) Unit tests
       - name: Run Unit Tests
-        run: mvn -B -ntp test
+        run: |
+          mvn -B -ntp test
 
       # 3) Checkstyle
       - name: Run Checkstyle
